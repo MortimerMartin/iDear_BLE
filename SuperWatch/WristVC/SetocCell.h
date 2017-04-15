@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SetocCell : UITableViewCell
-
+@property (nonatomic , copy) NSString * set_name;
+@property (nonatomic , assign) int lineHidden;
+@property (nonatomic , strong) UISwitch * setOpenBtn;
 @end

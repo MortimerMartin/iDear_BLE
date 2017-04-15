@@ -8,6 +8,18 @@
 
 #import "BaseViewController.h"
 
+typedef void(^reloadPersonInfo)(NSString * name,NSString * headimg);
+
+typedef void(^reloadTableView)(void);
 @interface ZYScalesViewController : BaseViewController
+
+@property (nonatomic , copy) reloadPersonInfo reloadInfo;
+
+/**
+ *  reloadTableView
+ */
+//-(void)reloadTableView:(reloadTableView)reload;
+
+@property (nonatomic , copy) reloadTableView  reloadTableview;
 
 @end

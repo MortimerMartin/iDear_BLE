@@ -9,5 +9,7 @@
 #import "BaseViewController.h"
 
 @interface ListViewController : BaseViewController
+@property (nonatomic , copy) NSString * userID;
+//@property (nonatomic , assign) BOOL isFamily;
 
 @end

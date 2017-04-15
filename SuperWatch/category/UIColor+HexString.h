@@ -16,4 +16,8 @@
 
 //另一种HEX 格式的颜色 ，例如：绿色 0xff00ff00
 +(UIColor *)colorWithARGB:(NSInteger)ARGBValue;
+
++ (UIColor *) colorWithHex:(int)color;
+
++ (UIColor *)colorWithHexCColor:(NSString *)hexString;
 @end

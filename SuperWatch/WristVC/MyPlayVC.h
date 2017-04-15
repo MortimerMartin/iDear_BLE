@@ -9,5 +9,6 @@
 #import "BaseViewController.h"
 
 @interface MyPlayVC : BaseViewController
+@property (nonatomic , copy) NSString * userID;
 
 @end

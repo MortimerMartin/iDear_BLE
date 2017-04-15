@@ -10,4 +10,9 @@
 
 @interface PersonHistoryVC : UIViewController
 
+@property (nonatomic , copy) NSString * beginString;
+@property (nonatomic , copy) NSString * endString;
+@property (nonatomic , copy) NSString * userId;
+@property (nonatomic , copy) NSString * Persontitle;
+
 @end

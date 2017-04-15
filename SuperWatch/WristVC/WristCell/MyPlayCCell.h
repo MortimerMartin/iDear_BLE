@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface MyPlayCCell : UICollectionViewCell
+@property (nonatomic , copy) NSString * name;
+@property (nonatomic , copy) NSString * content;
 
 @end

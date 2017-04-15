@@ -118,50 +118,90 @@ typedef struct ACTIVITYALARM{
 -(void)disable;
 -(void)startGo;
 -(void)stopGo;
-
+/**
+ * 设置个人信息 并 获取
+ */
 -(void)setInfo:(info)info;
 -(void)getInfo;
+
 -(void)setDeviceTime:(MyDeviceTime)time;
 -(void)getDeviceTime;
+
 -(void)getDetailDataWithDay:(int)day;
 -(void)getTotalDataWithDay:(int)day;
+
 -(void)startOTA;
+/**
+ * 获取手环版本号
+ */
 -(void)getVersion;
+
 -(void)setTotalAlarm:(BOOL)open;
 -(void)getTotalAlarm;
+
 -(void)setDetailAlarm:(MyAlarm)alarm;
 -(void)getDetailAlarm;
+
 -(void)readClockWithType:(int)number;
 -(void)setClock:(MyClock)clock;
 
 -(void)setActivityAlarm:(MyActivityAlarm)activityAlarm;
 -(void)getActivityAlarm;
+
 -(void)reset;
 -(void)Open;
+/**
+ * 获取手环mac地址
+ */
 -(void)GetMacAddress;
+/**
+ * 获取手环电量
+ */
 -(void)GetBatteryLevel;
+/**
+ * 重启手环
+ */
 -(void)MCUReset;
+/**
+ * 设置手环名字
+ */
 -(void)SetDeviceName:(NSString*)strName;
 -(void)GetDeviceName;
+/**
+ * 获取手环单位  km or mile
+ */
 -(void)GetDistanceUnit;
+/**
+ * 获取手环时间模式  12 or 24
+ */
 -(void)GetTimeMode;
-
-
-/*1638**/
+/**
+ * 设置最大心率值
+ */
 -(void)SetMaxHeartRate:(int)maxHeartRate;
-/**/
+/**
+ * 设置时间模式
+ */
 -(void)SetTimeChange12And24:(int)TimeType;
-
+/**
+ * 设置距离单位
+ */
 -(void)SetKmAndMile:(int)DistanceType;
+
 -(void)DeledeHistoryDataWithDay:(int)day;
 -(void)ReadHistoryGoalWithDay:(int)day;
+
 -(void)SetBaseHeartRate:(int)BaseHeartRate;
 -(void)GetBaseHeartRate;
+
 -(void)SetAutoHeartZone:(autoHeart)MyAutoHeart;
 -(void)GetAutoHeartZone;
+
 -(void)StartHeartRateMode;
 -(void)StopHeartRateMode;
+
 -(void)ReadHistoryHeartRateWithNumber:(int)Number;
+//设置目标步数  和  获取目标步数
 -(void)SetGoal:(int)Goal;
 -(void)GetGoal;
 

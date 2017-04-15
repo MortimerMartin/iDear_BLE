@@ -97,22 +97,25 @@ static __inline__ CGFloat CGPointDistanceBetweenTwoPoints(CGPoint point1, CGPoin
     self.holeRadiusPrecent = 0.2;
     self.maxAccentPrecent = 0.25;
     
-    [self addObserver:self
-           forKeyPath:@"holeRadiusPrecent"
-              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-              context:nil];
-    [self addObserver:self
-           forKeyPath:@"radiusPrecent"
-              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-              context:nil];
+//    [self addObserver:self.superview.superview
+//           forKeyPath:@"holeRadiusPrecent"
+//              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+//              context:nil];
+//    [self addObserver:self.superview.superview
+//           forKeyPath:@"radiusPrecent"
+//              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+//              context:nil];
     
 }
 
+-(void)releaseObserve{
+  
+}
 - (void) dealloc {
-    @try {
-        [self removeObserver:self forKeyPath:@"holeRadiusPrecent"];
-        [self removeObserver:self forKeyPath:@"radiusPrecent"];
-    } @catch (NSException * __unused exception) {}
+//    @try {
+//
+
+//    } @catch (NSException * __unused exception) {}
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -263,6 +266,7 @@ static __inline__ CGFloat CGPointDistanceBetweenTwoPoints(CGPoint point1, CGPoin
     for (NSDictionary *options in _chartValues) {
 
         VBPiePiece *piece = nil;
+
         if (piecesArray.count > 0) {
             piece = piecesArray.firstObject;
             [piecesArray removeObjectAtIndex:0];
@@ -392,6 +396,7 @@ static __inline__ CGFloat CGPointDistanceBetweenTwoPoints(CGPoint point1, CGPoin
     
     for (CALayer *l in self.layer.sublayers) {
         if ([l containsPoint:location]) {
+
             return l;
         }
     }
@@ -429,12 +434,22 @@ static __inline__ CGFloat CGPointDistanceBetweenTwoPoints(CGPoint point1, CGPoin
     CGPoint point = [touch locationInView:self];
     if (CGPointDistanceBetweenTwoPoints(point, _touchBegan) < 5) {
         _hitLayer = (VBPiePiece*)[self layerForTouch:touch];
-        
-        if (_hitLayer.accentPrecent < FLT_EPSILON) {
-            [_hitLayer animateToAccent:_maxAccentPrecent];
-        } else {
-            [_hitLayer animateToAccent:0];
+        for (VBPiePiece * lay in _piecesArray) {
+            if ([lay isEqual:_hitLayer]) {
+                if (_hitLayer.accentPrecent < FLT_EPSILON) {
+                    if (_YYlabelName) {
+                        _YYlabelName(_hitLayer.pieceName);
+                    }
+                    [_hitLayer animateToAccent:_maxAccentPrecent];
+                } else {
+                    [_hitLayer animateToAccent:0];
+                }
+            }else{
+                [lay animateToAccent:0];
+            }
         }
+
+
     }
 }
 

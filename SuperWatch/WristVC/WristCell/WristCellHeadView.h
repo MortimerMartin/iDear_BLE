@@ -10,4 +10,12 @@
 
 @interface WristCellHeadView : UIView
 
+@property (nonatomic , copy) NSString * img_name;
+@property (nonatomic , copy) NSString * fun_name;
+@property (nonatomic , copy) NSString * fun_content;
+@property (nonatomic , copy) NSString * fun_top;
+@property (nonatomic , copy) NSString * fun_bottom;
+
+@property (nonatomic , strong) UIColor * color;
+
 @end

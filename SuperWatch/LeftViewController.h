@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^isShowView)(BOOL show ,NSString * source ,NSString * userName);
 @interface LeftViewController : UIViewController
+
+@property (nonatomic , copy) isShowView  isShow;
 
 @end

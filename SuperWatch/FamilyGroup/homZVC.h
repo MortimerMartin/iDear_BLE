@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^reloadName_head)(NSString * name , NSString * head);
 @interface homZVC : UIViewController
+@property (nonatomic , copy) reloadName_head reloadNH;
 
 @end

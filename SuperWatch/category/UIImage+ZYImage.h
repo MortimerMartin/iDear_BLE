@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIImage (ZYImage)
-
++ (UIImage *)imageWithZYIColor:(UIColor *)color;
 @end

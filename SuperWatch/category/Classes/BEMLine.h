@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, BEMLineGradientDirection) {
 @interface BEMLine : UIView
 
 
+@property (nonatomic , assign) BOOL isZLine;
 
 //----- POINTS -----//
 
@@ -81,6 +82,8 @@ typedef NS_ENUM(NSUInteger, BEMLineGradientDirection) {
 
 /** Dash pattern for the references line on the Y axis */
 @property (nonatomic, strong) NSArray *lineDashPatternForReferenceYAxisLines;
+
+@property (nonatomic , assign) BOOL isShowYXLine;
 
 /** If a null value is present, interpolation would draw a best fit line through the null point bound by its surrounding points.  Default: YES */
 @property (assign, nonatomic) BOOL interpolateNullValues;

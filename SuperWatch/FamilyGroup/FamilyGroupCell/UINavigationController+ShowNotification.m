@@ -7,6 +7,7 @@
 //
 
 #import "UINavigationController+ShowNotification.h"
+#import "UIColor+HexString.h"
 
 @implementation UINavigationController (ShowNotification)
 
@@ -16,7 +17,7 @@
     label.font = [UIFont systemFontOfSize:14];
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor orangeColor];
+    label.backgroundColor = [UIColor colorWithHexString:@"#0fc2af"];
     [self.view insertSubview:label belowSubview:self.navigationBar];
     
     [UIView animateWithDuration:0.5 animations:^{
@@ -29,5 +30,7 @@
         }];
     }];
 }
+
+
 
 @end

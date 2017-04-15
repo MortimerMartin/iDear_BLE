@@ -10,4 +10,11 @@
 
 @implementation FamilyPerson
 
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+
+    if ([key isEqualToString:@"id"]) {
+        NSLog(@"%@",key);
+        self.userId = value;
+    }
+}
 @end

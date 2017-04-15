@@ -10,4 +10,6 @@
 
 @interface ClickViewVC : UIView
 
+@property (nonatomic , assign) NSInteger tableView_section;
+
 @end

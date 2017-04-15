@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, VBLabelsPosition) {
  */
 typedef CGPoint (^VBLabelBlock)(CALayer*layer, NSInteger index);
 
-
+typedef void(^YYLabelBlokc)(NSString * name);
 /*!
  @abstract Animatable Pie Chart control. Have abilities insert and delete values with animation.
  
@@ -69,6 +69,7 @@ typedef CGPoint (^VBLabelBlock)(CALayer*layer, NSInteger index);
  @note Executes only if labelsPosition = VBLabelsPositionCustom;
 */
 @property (nonatomic, copy)  VBLabelBlock labelBlock;
+@property (nonatomic , copy) YYLabelBlokc YYlabelName;//自己
 
 /*!
  @abstract Hole in center of diagram, precent of radius
@@ -206,6 +207,8 @@ typedef CGPoint (^VBLabelBlock)(CALayer*layer, NSInteger index);
  */
 - (void) setChartValues:(NSArray *)chartValues animation:(BOOL)animation duration:(double)duration options:(VBPieChartAnimationOptions)options;
 
+
+-(void)releaseObserve;
 @end
 
 

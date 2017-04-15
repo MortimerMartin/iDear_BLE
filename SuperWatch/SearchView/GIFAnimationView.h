@@ -10,4 +10,10 @@
 
 @interface GIFAnimationView : UIView
 
+- (void)startTimer;
+
+- (void)pauserTimer;
+
+@property (nonatomic , copy) NSString * status;
+
 @end

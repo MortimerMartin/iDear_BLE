@@ -7,8 +7,20 @@
 //
 
 #import "JoinHomeVC.h"
-
+#import "Masonry.h"
+#import "UIColor+HexString.h"
+//#import "JVFloatLabeledTextField.h"
+#import "UIView+CLExtension.h"
+#import "JoinHomeVVC.h"
+#import "DataManager.h"
+#import "SVProgressHUD.h"
 @interface JoinHomeVC ()
+{
+    UIView * topL;
+    UIView * underLine;
+}
+@property (nonatomic , strong) UIView * home_numView;
+@property (nonatomic , strong) UITextField * Account;
 
 @end
 
@@ -16,12 +28,174 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#eff4f4"];
+    [self setNavigationView];
+    [self setupLastViews];
+
+
+
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+}
+
+-(void)setupLastViews{
+
+
+    _home_numView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 64)];
+    _home_numView.backgroundColor = [UIColor colorWithHexString:@"#eff4f4"];
+    [self.view addSubview:_home_numView];
+
+
+     UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(9, 0, self.view.frame.size.width - 9, 30)];
+    label.text = @"输入家庭编号";
+    label.font = [UIFont systemFontOfSize:14.0];
+    label.textColor = [UIColor colorWithHexString:@"#737f7f"];
+    [_home_numView addSubview:label];
+
+
+    topL = [[UIView alloc] initWithFrame:CGRectMake(0, 30.5, self.view.frame.size.width, 0.5)];
+    topL.backgroundColor =[UIColor colorWithHexString:@"#c9cdcd"];
+    [_home_numView addSubview:topL];
+
+    UIView * topweightView = [[UIView alloc] initWithFrame:CGRectMake(0, 31, self.view.cl_width, 51)];
+    topweightView.backgroundColor = [UIColor whiteColor];
+    [_home_numView addSubview:topweightView];
+
+    self.Account = [[UITextField alloc] initWithFrame:CGRectMake(9, 31, self.view.cl_width - 19, 51)];
+    self.Account.font = [UIFont systemFontOfSize:15];
+    self.Account.backgroundColor = [UIColor whiteColor];
+    UIButton * rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightBtn setImage:[UIImage imageNamed:@"btn_delete_def"] forState:UIControlStateNormal];
+    [rightBtn setImage:[UIImage imageNamed:@"btn_delete_pre"] forState:UIControlStateHighlighted];
+    rightBtn.frame = CGRectMake(0, 0, 16, 16);
+    self.Account.rightView = rightBtn;
+    self.Account.rightViewMode = UITextFieldViewModeAlways;
+    [rightBtn addTarget:self action:@selector(clearTextField:) forControlEvents:UIControlEventTouchUpInside];
+
+//    _Account.clearButtonMode = UITextFieldViewModeAlways;
+    _Account.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"家庭组编号"
+                                                                         attributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#737f7f"]}];
+
+    _Account.textColor = [UIColor colorWithHexString:@"#303434"];
+    _Account.keyboardType = UIKeyboardTypePhonePad;
+    [_home_numView addSubview:_Account];
+
+
+
+    underLine = [[UIView alloc] initWithFrame:CGRectMake(0, 82.5, self.view.frame.size.width, 0.5)];
+    underLine.backgroundColor = [UIColor colorWithHexString:@"#c9cdcd"];
+    [_home_numView addSubview:underLine];
+
+
+}
+
+-(void)clearTextField:(UIButton *)sender{
+    self.Account.text = nil;
+}
+
+- (void)setNavigationView{
+
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(9 , 8, 40, 22)];
+    label.text = @"返回";
+    label.font= [UIFont systemFontOfSize:16.0];
+    label.textColor = [UIColor colorWithHexString:@"565c5c"];
+
+    UIImageView * back = [[UIImageView alloc] initWithFrame:CGRectMake(-5, 13, 6, 12)];
+    back.image =  [UIImage imageNamed:@"icon_back"];
+    back.userInteractionEnabled = YES;
+    UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+    [view addSubview:label];
+    [view addSubview:back];
+
+
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(popPersonCenter:)];
+    [view addGestureRecognizer:tap];
+
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:view];
+
+    //    [rightBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -rightBtn.currentImage.size.width, 0, 0)];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#565c5c"],NSFontAttributeName:[UIFont systemFontOfSize:19.0]};
+
+
+    UIButton *detailButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 44)];
+    [detailButton setTitleColor:[UIColor colorWithHexString:@"565c5c"] forState:UIControlStateNormal];
+    [detailButton setTitle:@"下一步" forState:UIControlStateNormal];
+    detailButton.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    [detailButton addTarget:self action:@selector(saveInfo:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:detailButton];
+    
+    self.title = @"加入家庭组";
+    
+}
+
+- (void)popPersonCenter:(UIButton *)sender{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)saveInfo:(UIButton *)sender{
+
+    if (_Account.text.length !=6) {
+        UIAlertController*alert=[UIAlertController alertControllerWithTitle:@"请输入正确的家庭组编号" message:@"6位家庭组编号" preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction*actin=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        }];
+        [alert addAction:actin];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+
+    if (![self deptNumInputShouldNumber:_Account.text]) {
+        UIAlertController*alert=[UIAlertController alertControllerWithTitle:@"家庭组编号含有特殊字符" message:@"请重新输入" preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction*actin=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+        }];
+        [alert addAction:actin];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+
+
+    NSDictionary * dict = @{@"homeNo":_Account.text};
+
+    [[DataManager manager] postDataWithUrl:@"doQueryUserByHomeNo" parameters:dict success:^(id json) {
+        NSDictionary * dict1 = json;
+        if ([dict1[@"status"] intValue] == 1) {
+
+            
+            JoinHomeVVC * home = [[JoinHomeVVC alloc] init];
+            home.homeNumer = _Account.text;
+            home.homeName = dict1[@"message"];
+            [self.navigationController pushViewController:home animated:YES];
+
+
+        }else{
+            [SVProgressHUD showErrorWithStatus:@"家庭组不存在"];
+        }
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:@"请求失败"];
+    }];
+
+
+
+
+
+
+}
+// 是否为纯数字
+- (BOOL) deptNumInputShouldNumber:(NSString *)str
+{
+    NSString *regex = @"[0-9]*";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
+    if ([pred evaluateWithObject:str]) {
+        return YES;
+    }
+    return NO;
 }
 
 /*

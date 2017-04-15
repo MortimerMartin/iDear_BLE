@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ZYselectDeviceView : UIView
-
+//@property (nonatomic , strong) UIView * topView;
+//@property (nonatomic , strong) UIView * bottomView;
 @end

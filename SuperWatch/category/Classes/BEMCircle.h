@@ -24,4 +24,7 @@
 /// The value of the point
 @property (nonatomic) CGFloat absoluteValue;
 
+@property (nonatomic , assign) BOOL isFillColor;
+
+
 @end

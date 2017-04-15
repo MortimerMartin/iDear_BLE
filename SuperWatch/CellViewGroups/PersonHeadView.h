@@ -10,4 +10,9 @@
 
 @interface PersonHeadView : UIView
 
+@property (nonatomic , copy) NSString * status;
+@property (nonatomic , copy) NSString * img_name;
+@property (nonatomic , copy) NSString * BMI_status;
+@property (nonatomic , assign) BOOL isBlooth;
+
 @end

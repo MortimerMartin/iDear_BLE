@@ -7,15 +7,35 @@
 //
 
 #import "BirthdayViewController.h"
-
+#import "BirthdayView.h"
+#import "HeightViewController.h"
 @interface BirthdayViewController ()
 
 @end
 
 @implementation BirthdayViewController
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+     BirthdayView * birthView = [[BirthdayView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.view addSubview:birthView];
+    
+        birthView.isBackBlock = ^ {
+             [self.navigationController popViewControllerAnimated:YES];
+
+        };
+    //
+        birthView.isNextBlock = ^ {
+            HeightViewController * height = [[HeightViewController alloc] init];
+            [self.navigationController pushViewController:height animated:YES];
+        };
+
     // Do any additional setup after loading the view.
 }
 
@@ -23,7 +43,9 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)dealloc{
+    NSLog(@"444444");
+}
 /*
 #pragma mark - Navigation
 

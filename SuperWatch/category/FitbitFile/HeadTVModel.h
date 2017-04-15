@@ -10,4 +10,9 @@
 
 @interface HeadTVModel : BQLDBModel
 
+@property (nonatomic) NSInteger timeid;  //日期
+@property (nonatomic) NSInteger AveageheadValue; //平均数
+@property (nonatomic) NSInteger MaxheadValue;  //最大值
+@property (nonatomic) NSInteger  MinheadValue; //最小值
+
 @end

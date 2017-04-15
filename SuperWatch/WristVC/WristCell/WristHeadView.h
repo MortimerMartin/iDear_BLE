@@ -10,4 +10,15 @@
 
 @interface WristHeadView : UIView
 
+@property (nonatomic , assign) BOOL SHFill;
+
+
+@property (nonatomic , copy) NSString * connect_status;
+@property (nonatomic , assign) int element_D;
+@property (nonatomic , assign) int current_b;
+@property (nonatomic , assign) int finish_b;
+@property (nonatomic , assign) CGFloat progress;
+
+//-(void)reloadViewWithPercent:(float)percent;
+
 @end

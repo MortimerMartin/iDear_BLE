@@ -10,4 +10,8 @@
 
 @interface joinViewCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * number;
+@property (nonatomic , copy) NSString * apply;
+@property (nonatomic , copy) NSString * text_color;
+
 @end

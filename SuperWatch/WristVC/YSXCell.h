@@ -10,4 +10,7 @@
 
 @interface YSXCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * img_name;
+@property (nonatomic , copy) NSString * hight_name;
+@property (nonatomic , strong) UIButton * imgView;
 @end

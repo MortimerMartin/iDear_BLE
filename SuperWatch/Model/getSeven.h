@@ -10,4 +10,10 @@
 
 @interface getSeven : NSObject
 
+//+(NSString *)getSeven:(NSString *)seven;
+
+//十进制转十六进制
++ (NSString *)ToHex:(uint16_t)tmpid;
+
++ (NSString * )getSeven;
 @end

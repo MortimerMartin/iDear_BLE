@@ -10,4 +10,8 @@
 
 @interface LaunchViewCenter : NSObject
 
++ (instancetype)shareInstance;
+
++(void)showLunchView:(NSArray *)imgArray;
+
 @end

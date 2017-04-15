@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^isManBlock)(void);
+
 @interface sexView : UIView
+
+@property (nonatomic , copy) isManBlock isMan;
+
+@property (nonatomic , copy) isManBlock isBack;
 
 @end

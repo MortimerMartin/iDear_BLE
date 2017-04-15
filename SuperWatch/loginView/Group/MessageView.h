@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^isLoginBlock)(NSInteger indexNUM);
+
 @interface MessageView : UIView
+
+
+
+@property (nonatomic , copy) isLoginBlock isLogin;
 
 @end

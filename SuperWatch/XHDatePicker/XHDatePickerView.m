@@ -9,11 +9,11 @@
 #import "XHDatePickerView.h"
 #import "NSDate+Extension.h"
 #import "UIView+Extension.h"
-
+#import "UIColor+HexString.h"
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define kPickerSize self.datePicker.frame.size
-#define RGBA(r, g, b, a) ([UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:a])
+//#define RGBA(r, g, b, a) ([UIColor colorWithRed:(r / 255.0) green:(g / 255.0) blue:(b / 255.0) alpha:a])
 #define RGB(r, g, b) RGBA(r,g,b,1)
 
 
@@ -65,7 +65,7 @@ typedef void(^doneBlock)(NSDate *,NSDate *);
     if (self) {
         self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] lastObject];
         
-        _dateFormatter = @"yyyy-MM-dd HH:mm";
+        _dateFormatter = @"yyyy-MM-dd";
         [self setupUI];
         [self defaultConfig];
         
@@ -80,14 +80,17 @@ typedef void(^doneBlock)(NSDate *,NSDate *);
 
 -(void)setupUI {
     self.segmentView.selectedSegmentIndex = 0;
+//    self.segmentView.hidden = YES;
+//    self.segmentView.backgroundColor = [UIColor colorWithHexString:@"#0fc2af"];
+//    self.segmentView.tintColor = [UIColor colorWithHexString:@"#0fc2af"];
     [self.segmentView addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     
     self.buttomView.layer.cornerRadius = 10;
     self.buttomView.layer.masksToBounds = YES;
     //self.themeColor = [UIColor colorFromHexRGB:@"#f7b639"];
-    self.themeColor = RGB(247, 133, 51);
+    self.themeColor = [UIColor colorWithHexString:@"#0fc2af"];
     self.frame=CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-    
+//    self.doneBtn.backgroundColor = [UIColor colorWithHexString:@"#0fc2af"];
     //点击背景是否影藏
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss)];
     tap.delegate = self;
@@ -105,6 +108,7 @@ typedef void(^doneBlock)(NSDate *,NSDate *);
     [self.showYearView addSubview:self.datePicker];
     
 }
+
 
 -(void)defaultConfig {
     
@@ -447,10 +451,14 @@ typedef void(^doneBlock)(NSDate *,NSDate *);
     
     switch (self.dateType) {
         case DateTypeStartDate:
+
             _startDate = self.scrollToDate;
+            _segmentView.selectedSegmentIndex = 1;
+            self.dateType = DateTypeEndDate;
             break;
             
         default:
+//            _segmentView.selectedSegmentIndex = 0;
             _endDate = self.scrollToDate;
             break;
     }

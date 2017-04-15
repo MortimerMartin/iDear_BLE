@@ -8,14 +8,21 @@
 //
 
 #import "BEMCircle.h"
-
+#import "UIColor+HexString.h"
 @implementation BEMCircle
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
+     
+        self.backgroundColor = [UIColor whiteColor];
+        self.layer.borderWidth = 1;
+        self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.layer.cornerRadius = 5;
+        self.layer.masksToBounds = YES;
+
+
     }
     return self;
 }

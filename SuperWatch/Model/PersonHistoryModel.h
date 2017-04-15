@@ -9,5 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface PersonHistoryModel : NSObject
+@property (nonatomic , copy) NSString * weight;
+@property (nonatomic , copy) NSString * createDate;
+@property (nonatomic , copy) NSString * bodyFatId;
 
 @end

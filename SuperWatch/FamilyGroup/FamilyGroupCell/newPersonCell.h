@@ -10,4 +10,8 @@
 
 @interface newPersonCell : UITableViewCell
 
+
+@property (nonatomic , assign) BOOL isNewApply;
+@property (nonatomic , assign) BOOL isNewAdd;
+
 @end

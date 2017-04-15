@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^resetTimer)(void);
 @interface SetocVC : UIViewController
+@property (nonatomic , copy) resetTimer resetTimerBlock;
 
 @end

@@ -10,4 +10,12 @@
 
 @interface TDPersonHeadView : UIView
 
+@property (nonatomic , copy) NSString * time_connect;
+@property (nonatomic , copy) NSString * person_status;
+
+
+
+
+@property (nonatomic , strong) NSMutableArray * personInfo;
+
 @end

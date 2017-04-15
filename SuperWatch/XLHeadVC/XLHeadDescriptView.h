@@ -10,4 +10,12 @@
 
 @interface XLHeadDescriptView : UIView
 
+@property (nonatomic , copy) NSString * left_head;
+@property (nonatomic , copy) NSString * mid_head;
+@property (nonatomic , copy) NSString * right_head;
+
+@property (nonatomic , copy) NSString * left_time;
+@property (nonatomic , copy) NSString * mid_time;
+@property (nonatomic , copy) NSString * right_time;
+
 @end

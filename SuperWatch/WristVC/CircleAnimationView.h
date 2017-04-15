@@ -10,4 +10,6 @@
 
 @interface CircleAnimationView : UIView
 
+
+- (void)drawProgress:(CGFloat )progress;
 @end

@@ -10,4 +10,9 @@
 
 @interface PersonCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * img;
+@property (nonatomic , copy) NSString * name;
+@property (nonatomic , copy) NSString * info;
+//@property (nonatomic , copy) NSString * status;
+
 @end

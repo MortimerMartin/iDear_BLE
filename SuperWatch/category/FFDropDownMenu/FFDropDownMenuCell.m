@@ -11,9 +11,9 @@
 //model
 #import "FFDropDownMenuModel.h"
 
-//other
-#import "FFDropDownMenu.h"
-
+#import "UIColor+HexString.h"
+#import "UIImageView+WebCache.h"
+#import "Masonry.h"
 @interface FFDropDownMenuCell ()
 
 @end
@@ -37,7 +37,7 @@
         self.customTitleLabel = customTitleLabel;
         
         UIView *separaterView = [[UIView alloc] init];
-        separaterView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1];
+        separaterView.backgroundColor = [UIColor colorWithHexString:@"#c9cdcd"];
         [self addSubview:separaterView];
         self.separaterView = separaterView;
     }
@@ -76,7 +76,7 @@
     
     //给imageView赋值
     if (realMenuModel.menuItemIconName.length) {
-        self.customImageView.image = [UIImage imageNamed:realMenuModel.menuItemIconName];
+        [self.customImageView sd_setImageWithURL:[NSURL URLWithString:realMenuModel.menuItemIconName]];
         
     } else {
 //        FFLog(@"您传入的图片为空图片,框架内部默认不做任何处理。若您的确不想传入图片，则请忽略此处打印");

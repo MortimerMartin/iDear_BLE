@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MINGXIViewController : UIViewController
+@property (nonatomic , copy) NSString * bodyFatId;
 
 @end

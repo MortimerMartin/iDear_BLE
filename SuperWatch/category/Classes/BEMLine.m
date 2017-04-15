@@ -9,7 +9,7 @@
 
 #import "BEMLine.h"
 #import "BEMSimpleLineGraphView.h"
-
+#import "UIColor+HexString.h"
 #if CGFLOAT_IS_DOUBLE
 #define CGFloatValue doubleValue
 #else
@@ -82,6 +82,9 @@
 
     if (self.enableRefrenceLines == YES) {
         if (self.arrayOfVerticalRefrenceLinePoints.count > 0) {
+//            if (self.arrayOfVerticalRefrenceLinePoints.count ==1) {
+//
+//            }
             for (NSNumber *xNumber in self.arrayOfVerticalRefrenceLinePoints) {
                 CGFloat xValue;
                 if (self.verticalReferenceHorizontalFringeNegation != 0.0) {
@@ -92,6 +95,7 @@
                     } else xValue = [xNumber floatValue];
                 } else xValue = [xNumber floatValue];
 
+
                 CGPoint initialPoint = CGPointMake(xValue, self.frame.size.height);
                 CGPoint finalPoint = CGPointMake(xValue, 0);
 
@@ -101,6 +105,9 @@
         }
 
         if (self.arrayOfHorizontalRefrenceLinePoints.count > 0) {
+//            if (self.arrayOfHorizontalRefrenceLinePoints.count ==1) {
+//
+//            }
             for (NSNumber *yNumber in self.arrayOfHorizontalRefrenceLinePoints) {
                 CGPoint initialPoint = CGPointMake(0, [yNumber floatValue]);
                 CGPoint finalPoint = CGPointMake(self.frame.size.width, [yNumber floatValue]);
@@ -201,6 +208,7 @@
         verticalReferenceLinesPathLayer.lineWidth = self.referenceLineWidth/2;
         
         if (self.lineDashPatternForReferenceYAxisLines) {
+
             verticalReferenceLinesPathLayer.lineDashPattern = self.lineDashPatternForReferenceYAxisLines;
         }
 
@@ -254,7 +262,16 @@
         CAShapeLayer *pathLayer = [CAShapeLayer layer];
         pathLayer.frame = self.bounds;
         pathLayer.path = line.CGPath;
-        pathLayer.strokeColor = self.color.CGColor;
+//折线颜色//
+        if (_lineGradientDirection == BEMLineGradientDirectionHorizontal) {
+            if (_isZLine == YES) {
+                pathLayer.strokeColor = [UIColor colorWithHexString:@"#fb5cb9"].CGColor;
+            }
+
+      
+        }else{
+             pathLayer.strokeColor = self.color.CGColor;
+        }
         pathLayer.fillColor = nil;
         pathLayer.opacity = self.lineAlpha;
         pathLayer.lineWidth = self.lineWidth;

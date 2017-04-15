@@ -9,5 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface ApplyPersonModel : NSObject
+@property (nonatomic , copy) NSString * status;
+@property (nonatomic , copy) NSString * approveId;
+@property (nonatomic , copy) NSString * nickName;
+@property (nonatomic , copy) NSString * imgSource;
+@property (nonatomic , copy) NSString * remark;
 
 @end

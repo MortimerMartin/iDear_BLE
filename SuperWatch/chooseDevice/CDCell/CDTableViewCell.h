@@ -10,4 +10,7 @@
 
 @interface CDTableViewCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * devicename;
+@property (nonatomic , assign) BOOL isSelected;
+
 @end

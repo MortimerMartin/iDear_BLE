@@ -10,4 +10,17 @@
 
 @interface PersonInfoCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * info_name;
+@property (nonatomic , copy) NSString * info;
+@property (nonatomic , copy) NSString * info_img;
+/**
+ *
+ *             ________
+ *         ____\_\_\_\_\
+ *       |   __________===== o o o o  [显示上面的线]
+ *       |__/   /c_/
+ *
+ */
+@property (nonatomic , assign) BOOL showTopLine;
+
 @end

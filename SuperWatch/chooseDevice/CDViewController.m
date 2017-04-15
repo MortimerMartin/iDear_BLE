@@ -7,8 +7,13 @@
 //
 
 #import "CDViewController.h"
+#import "CDTableViewCell.h"
 
-@interface CDViewController ()
+
+#define kCDTableViewCell @"kCDTableViewCell"
+@interface CDViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property(nonatomic ,strong) UITableView * tableView;
 
 @end
 
@@ -16,8 +21,41 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self setupTableView];
+    _deviceList = [NSMutableArray array];
     // Do any additional setup after loading the view.
 }
+
+
+- (void)setupTableView{
+    _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [UIView new];
+    [self.view addSubview:_tableView];
+
+    [_tableView registerClass:[CDTableViewCell class] forCellReuseIdentifier:kCDTableViewCell];
+
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _deviceList.count;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+
+    CDTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:kCDTableViewCell];
+    if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:kCDTableViewCell forIndexPath:indexPath];
+    }
+
+    return cell;
+
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

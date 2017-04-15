@@ -10,4 +10,10 @@
 
 @interface DeleteHistoryCell : UITableViewCell
 
+@property (nonatomic , strong) UIButton * deleteBtn;
+
+@property (nonatomic , assign) BOOL isEdit;
+@property (nonatomic , copy) NSString * left_time;
+@property (nonatomic , copy) NSString * right_content;
+
 @end

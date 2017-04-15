@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface CHEditLastTVCell : UITableViewCell
-
+@property (nonatomic , copy) NSString * title;
+@property (nonatomic , assign) int showRight_fun;
+//@property (nonatomic , copy) NSString * time_title;
+@property (nonatomic , assign) BOOL isTwo;
+@property (nonatomic , strong) UISwitch * first_switch;
 @end

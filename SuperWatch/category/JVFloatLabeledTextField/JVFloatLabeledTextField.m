@@ -71,11 +71,24 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     _floatingLabelHideAnimationDuration = kFloatingLabelHideAnimationDuration;
     [self setFloatingLabelText:self.placeholder];
 
+    UIButton * rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightBtn setImage:[UIImage imageNamed:@"btn_delete_def"] forState:UIControlStateNormal];
+    [rightBtn setImage:[UIImage imageNamed:@"btn_delete_pre"] forState:UIControlStateHighlighted];
+    rightBtn.frame = CGRectMake(0, 0, 16, 16);
+    self.rightView = rightBtn;
+    self.rightViewMode = UITextFieldViewModeWhileEditing;
+    [rightBtn addTarget:self action:@selector(clearTextField:) forControlEvents:UIControlEventTouchUpInside];
+
+
     _adjustsClearButtonRect = YES;
     _isFloatingLabelFontDefault = YES;
 }
 
 #pragma mark -
+
+-(void)clearTextField:(UIButton *)sender{
+    self.text = nil;
+}
 
 - (UIFont *)defaultFloatingLabelFont
 {

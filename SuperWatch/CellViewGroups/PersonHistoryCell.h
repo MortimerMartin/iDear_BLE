@@ -10,4 +10,7 @@
 
 @interface PersonHistoryCell : UITableViewCell
 
+@property (nonatomic , copy) NSString * time;
+@property (nonatomic , copy) NSString * weight;
+
 @end

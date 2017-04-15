@@ -10,4 +10,6 @@
 
 @interface CDViewController : UIViewController
 
+@property (nonatomic , strong) NSMutableArray * deviceList;
+
 @end

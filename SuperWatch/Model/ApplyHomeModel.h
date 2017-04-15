@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface ApplyHomeModel : NSObject
+@property (nonatomic , copy) NSString * approveId;
+@property (nonatomic , copy) NSString * homeNo;
+@property (nonatomic , copy) NSString * createDate;
+@property (nonatomic , copy) NSString * status;
 
 @end

@@ -20,6 +20,7 @@
 /** 菜单选项图标名称 */
 @property (nonatomic, copy) NSString *menuItemIconName;
 
+@property (nonatomic , copy) NSString * userID;
 
 /**
  *  快速实例化一个下拉菜单模型
@@ -30,6 +31,6 @@
  *
  *  @return 实例化的菜单模型
  */
-+ (instancetype)ff_DropDownMenuModelWithMenuItemTitle:(NSString *)menuItemTitle menuItemIconName:(NSString *)menuItemIconName menuBlock:(FFMenuBlock)menuBlock;
++ (instancetype)ff_DropDownMenuModelWithMenuItemTitle:(NSString *)menuItemTitle menuItemIconName:(NSString *)menuItemIconName GmeunItemID:(NSString *)personID menuBlock:(FFMenuBlock)menuBlock;
 
 @end

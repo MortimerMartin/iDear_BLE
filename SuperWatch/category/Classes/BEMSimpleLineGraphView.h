@@ -137,6 +137,13 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 //----- PROPERTIES -------------------------------------------------------------------//
 //------------------------------------------------------------------------------------//
 
+@property (nonatomic , assign) BOOL  showLineG;
+
+@property (nonatomic , assign) BOOL  showValues;
+
+@property (nonatomic , strong) UIColor * pop_LabelColor;
+@property (nonatomic , strong) UIColor * closeDot_ViewColor;
+
 
 /// The graph's label font used on various axis. This property may be privately overwritten, do not expect full functionality from this property.
 @property (strong, nonatomic, nullable) UIFont *labelFont;

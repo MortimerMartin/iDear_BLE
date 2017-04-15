@@ -9,7 +9,7 @@
 #import "VBPiePiece.h"
 #import "VBPiePiece_private.h"
 #import "VBPieChart.h"
-#import "UIColor+HexColor.h"
+#import "UIColor+HexString.h"
 
 
 @implementation VBPiePieceData
@@ -64,7 +64,7 @@
         
         id color = options[@"color"];
         if (color && [color isKindOfClass:[NSString class]]) {
-            data.color = [UIColor colorWithHexString:color];
+            data.color = [UIColor colorWithHexCColor:color];
         } else if (color && [color isKindOfClass:[UIColor class]]) {
             data.color = color;
         }
@@ -75,7 +75,7 @@
         
         id labelColor = options[@"labelColor"];
         if (labelColor && [labelColor isKindOfClass:[NSString class]]) {
-            data.labelColor = [UIColor colorWithHexString:labelColor];
+            data.labelColor = [UIColor colorWithHexCColor:labelColor];
         } else if (labelColor && [labelColor isKindOfClass:[UIColor class]]) {
             data.labelColor = labelColor;
         }
@@ -85,7 +85,7 @@
         
         id strokeColor = options[@"strokeColor"];
         if (strokeColor && [strokeColor isKindOfClass:[NSString class]]) {
-            data.strokeColor = [UIColor colorWithHexString:strokeColor];
+            data.strokeColor = [UIColor colorWithHexCColor:strokeColor];
         } else if (strokeColor && [strokeColor isKindOfClass:[UIColor class]]) {
             data.strokeColor = strokeColor;
         }
@@ -102,7 +102,10 @@
 
 
 @interface VBPiePiece ()
-
+{
+    CGFloat intRadiusL;
+    CGFloat outRadiusL;
+}
 @property (nonatomic) double accentValue;
 
 @property (nonatomic) double endAngle;
@@ -129,6 +132,7 @@
 @implementation VBPiePiece {
     double temp_innerRadius;
     double temp_outerRadius;
+    
 }
 
 - (id) init {
@@ -421,8 +425,8 @@
 - (CGMutablePathRef) generatePath {
     CGPoint center = CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2);
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRelativeArc(path, &_currentMatrix, center.x, center.y, _innerRadius, _startAngle, _angle);
-    CGPathAddRelativeArc(path, &_currentMatrix, center.x, center.y, _outerRadius, _startAngle+_angle , -_angle);
+    CGPathAddRelativeArc(path, &_currentMatrix, center.x, center.y, _innerRadius + intRadiusL, _startAngle, _angle);
+    CGPathAddRelativeArc(path, &_currentMatrix, center.x, center.y, _outerRadius + outRadiusL, _startAngle+_angle , -_angle);
     CGPathCloseSubpath(path);
     return path;
 }
@@ -489,9 +493,17 @@
     if ([[self animationKeys] count] != 0) {
         return NO;
     }
+
     _accentPrecent = accentPrecent;
     _accent = YES;
-    
+    if (accentPrecent!= 0) {
+//        accentPrecent = 0;
+        intRadiusL = 10;
+        outRadiusL = -10;
+    }else{
+        intRadiusL = 0;
+        outRadiusL = 0;
+    }
     self.accentValue = _innerRadius*_accentPrecent;
     
     CGPoint center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
@@ -501,7 +513,9 @@
     matrix = CGAffineTransformTranslate(matrix, _accentVector.x*_accentValue, _accentVector.y*_accentValue);
     matrix = CGAffineTransformTranslate(matrix,-center.x,-center.x);
     _currentMatrix = matrix;
-    
+
+
+
     CGMutablePathRef path = [self generatePath];
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"path"];

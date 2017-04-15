@@ -12,7 +12,7 @@
 #import "FFDropDownMenuTriangleView.h"
 
 //other
-#import "FFDropDownMenu.h"
+
 
 
 @interface FFDropDownMenuView ()<UITableViewDataSource, UITableViewDelegate>
@@ -63,14 +63,14 @@
         
         
         //公共属性的  默认属性的赋值<assign>
-        self.cellClassName = @"FFDropDownMenuCell";
+        self.cellClassName = @"ZYScalesDropCell";
         self.menuWidth = 150;
         self.menuCornerRadius = 5;
         self.eachMenuItemHeight = 40;
         self.menuRightMargin = 10;
         self.menuItemBackgroundColor = [UIColor whiteColor];
         self.triangleColor = [UIColor whiteColor];
-        self.triangleY = 64;
+        self.triangleY = 0;
         self.realTriangleY = self.triangleY;
         self.triangleRightMargin = 20;
         self.triangleSize = CGSizeMake(18, 10);
@@ -105,7 +105,7 @@
 //=================================================================
 #pragma mark - 快速实例化一个菜单对象<farst instance>
 
-+ (instancetype)ff_DefaultStyleDropDownMenuWithMenuModelsArray:(NSArray *)menuModelsArray menuWidth:(CGFloat)menuWidth eachItemHeight:(CGFloat)eachItemHeight menuRightMargin:(CGFloat)menuRightMargin triangleRightMargin:(CGFloat)triangleRightMargin {
++ (instancetype)ff_DefaultStyleDropDownMenuWithMenuModelsArray:(NSMutableArray *)menuModelsArray menuWidth:(CGFloat)menuWidth eachItemHeight:(CGFloat)eachItemHeight menuRightMargin:(CGFloat)menuRightMargin triangleRightMargin:(CGFloat)triangleRightMargin {
     
     FFDropDownMenuView *menuView = [FFDropDownMenuView new];
     
@@ -133,7 +133,9 @@
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     
     //设置view的圆角、frame  <set view's cornerRadius and frame>
-    self.frame = [UIScreen mainScreen].bounds;
+//    self.frame = [UIScreen mainScreen].bounds;
+
+    self.frame = CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
     self.clipsToBounds = YES;
     self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:self.bgColorEndAlpha];
     
@@ -148,6 +150,7 @@
     //tableView(菜单栏)的frame <set tableView(menuBar) frame>
     CGFloat menuViewHeight = self.menuBarHeight >= 0 ? self.menuBarHeight : self.eachMenuItemHeight * self.menuModelsArray.count;
     self.menuViewFrame = CGRectMake(horizonWidth - self.menuWidth - self.menuRightMargin, CGRectGetMaxY(self.triangleView.frame), self.menuWidth, menuViewHeight);
+
     self.menuContentView.frame = self.menuViewFrame;
     self.tableView.frame = self.menuContentView.bounds;
     self.tableView.scrollEnabled = self.ifShouldScroll;
@@ -327,27 +330,25 @@ static NSString *const CellID = @"CellID";
     }
     
     FFDropDownMenuBasedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellID];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     FFDropDownMenuBasedModel *menuModel = self.menuModelsArray[indexPath.row];
     
     //如果用框架中默认的菜单样式，则隐藏最后一个菜单的下划线
     
-    if ([cell isMemberOfClass:[FFDropDownMenuCell class]]) {
+    if ([cell isMemberOfClass:[ZYScalesDropCell class]]) {
         
-        FFDropDownMenuCell *tempCell = (FFDropDownMenuCell *)cell;
-        tempCell.titleColor = self.titleColor;
-        tempCell.titleFontSize = self.titleFontSize;
-        tempCell.iconSize = self.iconSize;
-        tempCell.iconLeftMargin = self.iconLeftMargin;
-        tempCell.iconRightMargin = self.iconRightMargin;
-        
+        ZYScalesDropCell *tempCell = (ZYScalesDropCell *)cell;
+//        tempCell.titleColor = self.titleColor;
+//        tempCell.titleFontSize = self.titleFontSize;
+//        tempCell.iconSize = self.iconSize;
+//        tempCell.iconLeftMargin = self.iconLeftMargin;
+//        tempCell.iconRightMargin = self.iconRightMargin;
+
         if (self.menuModelsArray.count - 1 == indexPath.row) {
-            tempCell.separaterView.hidden = YES;
-        }
-        
-        else {
-            tempCell.separaterView.hidden = NO;
+            tempCell.onlyYOU = YES;
+        }else {
+            tempCell.onlyYOU = NO;
         }
     }
     
@@ -390,6 +391,9 @@ static NSString *const CellID = @"CellID";
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     /** 点击view退出菜单 */
     if (self.isShow == YES) {
+        if (_reloadStatus) {
+            _reloadStatus(@NO);
+        }
         [self dismissMenuWithAnimation:YES];
     }
 }
@@ -538,6 +542,7 @@ static NSString *const CellID = @"CellID";
     
     self.isShow = YES;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+//    keyWindow.frame = CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
     [keyWindow addSubview:self];
     
     //将背景颜色设置浅的背景颜色
@@ -690,7 +695,7 @@ static NSString *const CellID = @"CellID";
 //=================================================================
 #pragma mark - 公共属性的set方法<set method>
 
-- (void)setMenuModelsArray:(NSArray *)menuModelsArray {//1
+- (void)setMenuModelsArray:(NSMutableArray *)menuModelsArray {//1
     _menuModelsArray = menuModelsArray;
 }
 

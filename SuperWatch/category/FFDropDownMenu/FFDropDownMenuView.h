@@ -16,8 +16,8 @@
 
 //cell
 #import "FFDropDownMenuBasedCell.h"
-#import "FFDropDownMenuCell.h"
-
+//#import "FFDropDownMenuCell.h"
+#import "ZYScalesDropCell.h"
 
 //default value
 #define FFDefaultFloat -10.0
@@ -86,6 +86,7 @@ typedef NS_ENUM(NSInteger, FFDropDownMenuViewAnimateType) {
 @end
 
 
+typedef void(^reloadDismissStatus)(BOOL status);
 /**
  *  drop-down menu
  *  下拉菜单
@@ -134,7 +135,7 @@ typedef NS_ENUM(NSInteger, FFDropDownMenuViewAnimateType) {
  *
  *  @return An initialized drop-down menu
  */
-+ (instancetype)ff_DefaultStyleDropDownMenuWithMenuModelsArray:(NSArray *)menuModelsArray menuWidth:(CGFloat)menuWidth eachItemHeight:(CGFloat)eachItemHeight menuRightMargin:(CGFloat)menuRightMargin triangleRightMargin:(CGFloat)triangleRightMargin;
++ (instancetype)ff_DefaultStyleDropDownMenuWithMenuModelsArray:(NSMutableArray *)menuModelsArray menuWidth:(CGFloat)menuWidth eachItemHeight:(CGFloat)eachItemHeight menuRightMargin:(CGFloat)menuRightMargin triangleRightMargin:(CGFloat)triangleRightMargin;
 
 
 
@@ -218,6 +219,7 @@ typedef NS_ENUM(NSInteger, FFDropDownMenuViewAnimateType) {
 
 
 
+@property (nonatomic , copy) reloadDismissStatus reloadStatus;
 
 
 
@@ -236,7 +238,7 @@ typedef NS_ENUM(NSInteger, FFDropDownMenuViewAnimateType) {
  *     -----------------------------------------------------------
  *     drop-down menu models array(Array storage FFDropDownMenuModel instances or the FFDropDownMenuModel's subclass instances )
  */
-@property (nonatomic, strong) NSArray *menuModelsArray;
+@property (nonatomic, strong) NSMutableArray *menuModelsArray;
 
 /** 2、cell的类名, 必须是FFDropDownMenuBasedCell的子类
  *               若用框架自带的cell,直接传@"FFDropDownMenuCell"
@@ -429,5 +431,12 @@ typedef NS_ENUM(NSInteger, FFDropDownMenuViewAnimateType) {
 
 /** 弹出菜单 */
 - (void)showMenu;
-
+/**
+ *  关闭菜单
+ *
+ *  @param animation 是否需要动画效果
+ *  如果是点击cell  执行block里面的代码就无需动画
+ *  如果死点击view的其他区域，没有执行block代码，则需要一个动画效果
+ */
+- (void)dismissMenuWithAnimation:(BOOL)animation;
 @end

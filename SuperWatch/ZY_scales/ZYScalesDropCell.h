@@ -9,5 +9,9 @@
 #import "FFDropDownMenuBasedCell.h"
 
 @interface ZYScalesDropCell : FFDropDownMenuBasedCell
+@property (nonatomic , copy) NSString * drop_title;
+@property (nonatomic , copy) NSString * drop_source;
+@property (nonatomic , assign) BOOL onlyYOU;
+@property (nonatomic , assign) BOOL applyF;
 
 @end

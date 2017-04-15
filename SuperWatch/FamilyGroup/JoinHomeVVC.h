@@ -10,4 +10,7 @@
 
 @interface JoinHomeVVC : UIViewController
 
+@property (nonatomic , copy) NSString * homeNumer;
+@property (nonatomic , copy) NSString * homeName;
+
 @end

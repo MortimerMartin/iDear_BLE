@@ -73,13 +73,14 @@
     self.titleLabel.alpha    = 0;
     self.overlayLabel.hidden = NO;
     self.overlayLabel.text   = self.titleLabel.text;
+    self.overlayLabel.font = [UIFont systemFontOfSize:11];
     [self.overlayLabel setBackgroundColor:self.disabledBackgroundColor ?: self.backgroundColor];
     [self.overlayLabel setTextColor:self.disabledTitleColor ?: self.titleLabel.textColor];
     
     __weak __typeof(self) weakSelf = self;
     [[WLButtonCountdownManager defaultManager] scheduledCountDownWithKey:self.identifyKey timeInterval:60 countingDown:^(NSTimeInterval leftTimeInterval) {
         __strong __typeof(weakSelf) self = weakSelf;
-        self.overlayLabel.text = [NSString stringWithFormat:@"%@ 秒后重试", @(leftTimeInterval)];
+        self.overlayLabel.text = [NSString stringWithFormat:@"重新发送(%@)", @(leftTimeInterval)];
     } finished:^(NSTimeInterval finalTimeInterval) {
         __strong __typeof(weakSelf) self = weakSelf;
         self.enabled             = YES;

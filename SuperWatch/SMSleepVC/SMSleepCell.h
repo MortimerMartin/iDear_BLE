@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SMSleepCell : UITableViewCell
+@property (nonatomic , copy) NSString * time;
+@property (nonatomic , copy) NSString * status;
+@property (nonatomic , assign) BOOL lastrow;
 
 @end

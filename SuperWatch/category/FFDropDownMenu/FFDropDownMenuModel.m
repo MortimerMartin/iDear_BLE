@@ -19,11 +19,13 @@
  *
  *  @return 实例化的菜单模型
  */
-+ (instancetype)ff_DropDownMenuModelWithMenuItemTitle:(NSString *)menuItemTitle menuItemIconName:(NSString *)menuItemIconName menuBlock:(FFMenuBlock)menuBlock {
++ (instancetype)ff_DropDownMenuModelWithMenuItemTitle:(NSString *)menuItemTitle menuItemIconName:(NSString *)menuItemIconName GmeunItemID:(NSString *)personID menuBlock:(FFMenuBlock)menuBlock {
     FFDropDownMenuModel *model = [FFDropDownMenuModel new];
     model.menuItemTitle = menuItemTitle;
     model.menuItemIconName = menuItemIconName;
+    model.userID = personID;
     model.menuBlock = menuBlock;
+
     return model;
 }
 

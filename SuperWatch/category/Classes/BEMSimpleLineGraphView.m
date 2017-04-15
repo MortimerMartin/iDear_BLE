@@ -8,7 +8,7 @@
 //
 
 #import "BEMSimpleLineGraphView.h"
-
+#import "UIColor+HexString.h"
 const CGFloat BEMNullGraphValue = CGFLOAT_MAX;
 
 
@@ -63,6 +63,11 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 
 /// The vertical line which appears when the user drags across the graph
 @property (strong, nonatomic) UIView *touchInputLine;
+@property (nonatomic , strong) UIView * underLine;
+@property (nonatomic , strong) UIView * underLineView;
+
+
+//@property (nonatomic , strong) UIView * whiteView;
 
 /// View for picking up pan gesture
 @property (strong, nonatomic, readwrite) UIView *panView;
@@ -138,10 +143,11 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 
 - (void)commonInit {
     // Do any initialization that's common to both -initWithFrame: and -initWithCoder: in this method
-    
+
+
     // Set the X Axis label font
     _labelFont = [UIFont fontWithName:DEFAULT_FONT_NAME size:13];
-    
+
     // Set Animation Values
     _animationGraphEntranceTime = 1.5;
     
@@ -200,6 +206,9 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 
     // Initialize BEM Objects
     _averageLine = [[BEMAverageLine alloc] init];
+    _showLineG = YES;
+    _showValues = YES;
+
 }
 
 - (void)prepareForInterfaceBuilder {
@@ -323,6 +332,16 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     // If the touch report is enabled, set it up
     if (self.enableTouchReport == YES || self.enablePopUpReport == YES) {
         // Initialize the vertical gray line that appears where the user touches the graph.
+
+        if (_showLineG == YES) {
+            self.underLine = [[UIView alloc] init];
+            self.underLine.backgroundColor = [UIColor whiteColor];
+            [self addSubview:self.underLine];
+        }
+//        self.underLineView = [[UIView alloc] init];
+//        self.underLineView.backgroundColor = [UIColor whiteColor];
+//        [self addSubview:self.underLineView];
+
         self.touchInputLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.widthTouchInputLine, self.frame.size.height)];
         self.touchInputLine.backgroundColor = self.colorTouchInputLine;
         self.touchInputLine.alpha = 0;
@@ -346,6 +365,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                 self.popUpView = [self.delegate popUpViewForLineGraph:self];
                 self.usingCustomPopupView = YES;
                 self.popUpView.alpha = 0;
+                self.underLine.alpha = 0;
                 [self addSubview:self.popUpView];
             } else {
                 NSString *maxValueString = [NSString stringWithFormat:self.formatStringForValues, [self calculateMaximumPointValue].doubleValue];
@@ -379,7 +399,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                 self.popUpLabel.backgroundColor = [UIColor clearColor];
                 [self.popUpLabel sizeToFit];
                 self.popUpLabel.alpha = 0;
-                
+                self.underLine.alpha = 0;
                 self.popUpView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.popUpLabel.frame.size.width + 10, self.popUpLabel.frame.size.height + 2)];
                 self.popUpView.backgroundColor = self.colorBackgroundPopUplabel;
                 self.popUpView.alpha = 0;
@@ -449,7 +469,8 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             self.YAxisLabelXOffset = [longestString sizeWithAttributes:attributes].width + 5;
         }
     } else self.YAxisLabelXOffset = 0;
-
+    self.YAxisLabelXOffset = 0;
+    NSLog(@"%f",self.YAxisLabelXOffset);
     // Draw the X-Axis
     [self drawXAxis];
 
@@ -525,7 +546,14 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                 circleDot.alpha = 0;
                 circleDot.absoluteValue = dotValue;
                 circleDot.Pointcolor = self.colorPoint;
-                
+
+                //,.,.,.,.,..,.,.,.,.,.,.,.,..,.,..,..,..,..,..,..,..,..,..,.,.,..,..,..,
+//                UIView * view = [[UIView alloc] initWithFrame:CGRectMake(positionOnXAxis, positionOnYAxis-4, 1, self.frame.size.height - positionOnYAxis -20 +2)];
+//                view.backgroundColor = [UIColor whiteColor];
+//                view.tag = i + 770;
+//                [self addSubview:view];
+
+
                 [self addSubview:circleDot];
                 if (self.alwaysDisplayPopUpLabels == YES) {
                     if ([self.delegate respondsToSelector:@selector(lineGraph:alwaysDisplayPopUpAtIndex:)]) {
@@ -595,16 +623,23 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     line.enableTopReferenceFrameLine = self.enableTopReferenceAxisFrameLine;
     line.enableLeftReferenceFrameLine = self.enableLeftReferenceAxisFrameLine;
     line.enableBottomReferenceFrameLine = self.enableBottomReferenceAxisFrameLine;
-    
+    if (_showValues == NO) {
+        line.isZLine = YES;
+    }
+
+    line.color = self.colorLine;
+
+
     if (self.enableReferenceXAxisLines || self.enableReferenceYAxisLines) {
         line.enableRefrenceLines = YES;
         line.refrenceLineColor = self.colorReferenceLines;
         line.verticalReferenceHorizontalFringeNegation = xAxisHorizontalFringeNegationValue;
         line.arrayOfVerticalRefrenceLinePoints = self.enableReferenceXAxisLines ? xAxisLabelPoints : nil;
         line.arrayOfHorizontalRefrenceLinePoints = self.enableReferenceYAxisLines ? yAxisLabelPoints : nil;
+//        line.color = [UIColor clearColor];
     }
     
-    line.color = self.colorLine;
+
     line.lineGradient = self.gradientLine;
     line.lineGradientDirection = self.gradientLineDirection;
     line.animationTime = self.animationGraphEntranceTime;
@@ -621,7 +656,9 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     [self addSubview:line];
     [self sendSubviewToBack:line];
     [self sendSubviewToBack:self.backgroundXAxis];
-    
+    if (_showValues == NO) {
+        line.isShowYXLine = NO;
+    }
     [self didFinishDrawingIncludingYAxis:NO];
 }
 
@@ -653,7 +690,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
         for (NSNumber *increment in axisValues) {
             NSInteger index = increment.integerValue;
             NSString *xAxisLabelText = [self xAxisTextForIndex:index];
-            
+
             UILabel *labelXAxis = [self xAxisLabelWithText:xAxisLabelText atIndex:index];
             [xAxisLabels addObject:labelXAxis];
             
@@ -676,7 +713,8 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
         while (startingIndex < numberOfPoints) {
             
             NSString *xAxisLabelText = [self xAxisTextForIndex:startingIndex];
-            
+
+
             UILabel *labelXAxis = [self xAxisLabelWithText:xAxisLabelText atIndex:startingIndex];
             [xAxisLabels addObject:labelXAxis];
             
@@ -759,8 +797,15 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                 for (int i = 1; i <= (numberOfPoints/numberOfGaps); i++) {
                     NSInteger index = i *numberOfGaps - 1 - offset;
                     NSString *xAxisLabelText = [self xAxisTextForIndex:index];
-                    
+
                     UILabel *labelXAxis = [self xAxisLabelWithText:xAxisLabelText atIndex:index];
+
+                    //
+                    UIView * view =[[UIView alloc] init];
+                    if (_showValues == YES) {
+                         view = [self xAxixViewWithFrame:labelXAxis.frame atIndex:index];
+                    }
+
                     [xAxisLabels addObject:labelXAxis];
                     
                     if (self.positionYAxisRight) {
@@ -772,6 +817,10 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                     }
                     
                     [self addSubview:labelXAxis];
+
+                    [self addSubview:view];
+
+
                     [xAxisValues addObject:xAxisLabelText];
                 }
                 
@@ -824,8 +873,31 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     } else  {
         xAxisLabelText = @"";
     }
-    
+    if (_showValues == NO) {
+        return @"";
+    }
     return xAxisLabelText;
+}
+
+- (UIView *)xAxixViewWithFrame:(CGRect)frame atIndex:(NSInteger)index{
+
+    UIView *  viewXAxis = [[UIView alloc] init];
+    viewXAxis.backgroundColor = [UIColor whiteColor];
+    viewXAxis.layer.cornerRadius = 2.5;
+    viewXAxis.layer.masksToBounds = YES;
+
+        if (index == 0) {
+             viewXAxis.frame = CGRectMake(frame.origin.x -2 , self.frame.size.height - 22, 5, 5);
+        }else if (index+1 == numberOfPoints){
+
+             viewXAxis.frame = CGRectMake(self.frame.size.width - 2, self.frame.size.height - 22, 5, 5);
+
+        }else{
+             viewXAxis.frame = CGRectMake(frame.origin.x + (frame.size.width/2)-2, self.frame.size.height - 22, 5, 5);
+
+        }
+
+    return viewXAxis;
 }
 
 - (UILabel *)xAxisLabelWithText:(NSString *)text atIndex:(NSInteger)index {
@@ -879,6 +951,10 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     rect.size = lRect.size;
     labelXAxis.frame = rect;
     labelXAxis.center = center;
+
+    if (_showValues == NO) {
+        labelXAxis.textColor = [UIColor clearColor];
+    }
     return labelXAxis;
 }
 
@@ -895,7 +971,8 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     CGRect frameForLabelYAxis;
     CGFloat xValueForCenterLabelYAxis;
     NSTextAlignment textAlignmentForLabelYAxis;
-    
+//左边的view（label）的宽度
+//    self.YAxisLabelXOffset = 1;
     if (self.positionYAxisRight) {
         frameForBackgroundYAxis = CGRectMake(self.frame.size.width - self.YAxisLabelXOffset, 0, self.YAxisLabelXOffset, self.frame.size.height);
         frameForLabelYAxis = CGRectMake(self.frame.size.width - self.YAxisLabelXOffset - 5, 0, self.YAxisLabelXOffset - 5, 15);
@@ -907,12 +984,15 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
         xValueForCenterLabelYAxis = self.YAxisLabelXOffset/2;
         textAlignmentForLabelYAxis = NSTextAlignmentRight;
     }
-    
+
+
     UIView *backgroundYaxis = [[UIView alloc] initWithFrame:frameForBackgroundYAxis];
+
     backgroundYaxis.tag = BackgroundYAxisTag2100;
     if (self.colorBackgroundYaxis == nil) backgroundYaxis.backgroundColor = self.colorTop;
     else backgroundYaxis.backgroundColor = self.colorBackgroundYaxis;
     backgroundYaxis.alpha = self.alphaBackgroundYaxis;
+//    backgroundYaxis.backgroundColor = [UIColor redColor];
     [self addSubview:backgroundYaxis];
     
     NSMutableArray *yAxisLabels = [NSMutableArray arrayWithCapacity:0];
@@ -969,6 +1049,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             UILabel *labelYAxis = [[UILabel alloc] initWithFrame:frameForLabelYAxis];
             NSString *formattedValue = [NSString stringWithFormat:self.formatStringForValues, dotValue.doubleValue];
             labelYAxis.text = [NSString stringWithFormat:@"%@%@%@", yAxisPrefix, formattedValue, yAxisSuffix];
+
             labelYAxis.textAlignment = textAlignmentForLabelYAxis;
             labelYAxis.font = self.labelFont;
             labelYAxis.textColor = self.colorYaxisLabel;
@@ -997,6 +1078,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             UILabel *labelYAxis = [[UILabel alloc] initWithFrame:frameForLabelYAxis];
             labelYAxis.center = CGPointMake(xValueForCenterLabelYAxis, yAxisPosition);
             labelYAxis.text = [NSString stringWithFormat:self.formatStringForValues, (graphHeight - self.XAxisLabelYOffset - yAxisPosition)];
+          
             labelYAxis.font = self.labelFont;
             labelYAxis.textAlignment = textAlignmentForLabelYAxis;
             labelYAxis.textColor = self.colorYaxisLabel;
@@ -1077,7 +1159,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     
     return offset;
 }
-
+/////////////////////////////////////  上面的 label
 - (void)displayPermanentLabelForPoint:(BEMCircle *)circleDot {
     self.enablePopUpReport = NO;
     self.xCenterLabel = circleDot.center.x;
@@ -1099,7 +1181,13 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     NSNumber *value = dataPoints[index]; // @((NSInteger) circleDot.absoluteValue)
     NSString *formattedValue = [NSString stringWithFormat:self.formatStringForValues, value.doubleValue];
     permanentPopUpLabel.text = [NSString stringWithFormat:@"%@%@%@", prefix, formattedValue, suffix];
-    
+    if (_showValues == YES) {
+        permanentPopUpLabel.textColor = [UIColor colorWithHexString:@"#0fc2af"];
+    }else{
+        permanentPopUpLabel.textColor = [UIColor colorWithHexString:@"#fb5cb9"];
+    }
+
+
     permanentPopUpLabel.font = self.labelFont;
     permanentPopUpLabel.backgroundColor = [UIColor clearColor];
     [permanentPopUpLabel sizeToFit];
@@ -1317,17 +1405,33 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     }
     
     self.touchInputLine.alpha = self.alphaTouchInputLine;
-    
+
+    self.touchInputLine.alpha = 0;
+
     closestDot = [self closestDotFromtouchInputLine:self.touchInputLine];
-    closestDot.alpha = 0.8;
-    
-    
+    if (_showValues == NO) {
+
+        closestDot.backgroundColor = [UIColor colorWithHexString:@"#fb5cb9"];
+    }else{
+
+
+        closestDot.layer.borderColor = [UIColor colorWithHexString:@"#01d772"].CGColor;
+
+
+    }
+    if (_closeDot_ViewColor) {
+        closestDot.layer.borderColor = _closeDot_ViewColor.CGColor;
+    }
+    closestDot.alpha = 1;
+//    _underLine.alpha =1;
+
     if (self.enablePopUpReport == YES && closestDot.tag >= DotFirstTag100 && closestDot.tag < DotLastTag1000 && [closestDot isKindOfClass:[BEMCircle class]] && self.alwaysDisplayPopUpLabels == NO) {
         [self setUpPopUpLabelAbovePoint:closestDot];
     }
     
     if (closestDot.tag >= DotFirstTag100 && closestDot.tag < DotLastTag1000 && [closestDot isMemberOfClass:[BEMCircle class]]) {
         if ([self.delegate respondsToSelector:@selector(lineGraph:didTouchGraphWithClosestIndex:)] && self.enableTouchReport == YES) {
+//            self.touchInputLine.alpha = 1;
             [self.delegate lineGraph:self didTouchGraphWithClosestIndex:((NSInteger)closestDot.tag - DotFirstTag100)];
             
         } else if ([self.delegate respondsToSelector:@selector(didTouchGraphWithClosestIndex:)] && self.enableTouchReport == YES) {
@@ -1363,6 +1467,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             if (self.enablePopUpReport == YES) {
                 self.popUpView.alpha = 0;
                 self.popUpLabel.alpha = 0;
+                self.underLine.alpha = 0;
 //                self.customPopUpView.alpha = 0;
             }
         } completion:nil];
@@ -1388,7 +1493,8 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     self.popUpView.center = CGPointMake(self.xCenterLabel, self.yCenterLabel);
 
     self.popUpView.alpha = 1.0;
-    
+//    self.underLine.alpha = 1.0;
+
     CGPoint popUpViewCenter = CGPointZero;
     
     if ([self.delegate respondsToSelector:@selector(popUpSuffixForlineGraph:)])
@@ -1418,11 +1524,14 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     if (!CGPointEqualToPoint(popUpViewCenter, CGPointZero)) {
         self.popUpView.center = popUpViewCenter;
     }
+    _underLine.frame = CGRectMake(closestDot.center.x, closestDot.center.y, 1, self.frame.size.height - closestDot.center.y - 20);
+
     
     if (!self.usingCustomPopupView) {
         [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             self.popUpView.alpha = 0.7;
             self.popUpLabel.alpha = 1;
+            self.underLine.alpha = 1;
         } completion:nil];
         NSString *prefix = @"";
         NSString *suffix = @"";
@@ -1436,6 +1545,16 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
         NSString *formattedValue = [NSString stringWithFormat:self.formatStringForValues, value.doubleValue];
         self.popUpLabel.text = [NSString stringWithFormat:@"%@%@%@", prefix, formattedValue, suffix];
         self.popUpLabel.center = self.popUpView.center;
+        if (_showValues ==NO) {
+            self.popUpLabel.textColor = [UIColor colorWithHexString:@"#fb5cb9"];
+        }else{
+            self.popUpLabel.textColor = [UIColor colorWithHexString:@"#0fc2af"];
+        }
+
+        if (_pop_LabelColor) {
+            self.popUpLabel.textColor = _pop_LabelColor;
+        }
+
     }
 }
 
